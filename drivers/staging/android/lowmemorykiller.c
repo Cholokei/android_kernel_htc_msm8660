@@ -270,11 +270,6 @@ static int lowmem_shrink(struct shrinker *s, struct shrink_control *sc)
 		sig = p->signal;
 		if (!mm || !sig) {
 			task_unlock(p);
-		if (tsk->flags & PF_KTHREAD)
-			continue;
-
-		p = find_lock_task_mm(tsk);
-		if (!p)
 			continue;
 		}
 		oom_adj = sig->oom_adj;
