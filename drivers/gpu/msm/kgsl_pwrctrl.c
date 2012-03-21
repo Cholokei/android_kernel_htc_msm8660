@@ -732,6 +732,50 @@ _nap(struct kgsl_device *device)
 static void
 _sleep_accounting(struct kgsl_device *device)
 {
+<<<<<<< HEAD
+=======
+	struct kgsl_pwrctrl *pwr = &device->pwrctrl;
+	KGSL_PWR_INFO(device, "sleep device %d\n", device->id);
+
+	/* Work through the legal state transitions */
+	if ((device->requested_state == KGSL_STATE_NAP)) {
+		if (device->pwrctrl.restore_slumber) {
+			device->requested_state = KGSL_STATE_NONE;
+			return 0;
+		} else if (device->ftbl->isidle(device))
+			goto nap;
+	} else if (device->requested_state == KGSL_STATE_SLEEP) {
+		if (device->state == KGSL_STATE_NAP ||
+			device->ftbl->isidle(device)) {
+			if (!device->pwrctrl.restore_slumber)
+				goto sleep;
+			else
+				goto slumber;
+			}
+	} else if (device->requested_state == KGSL_STATE_SLUMBER) {
+		if (device->state == KGSL_STATE_INIT)
+			return 0;
+		if (device->ftbl->isidle(device))
+			goto slumber;
+		else
+			device->pwrctrl.restore_slumber = true;
+	}
+
+	device->requested_state = KGSL_STATE_NONE;
+	return -EBUSY;
+
+
+slumber:
+	_slumber(device);
+
+sleep:
+	kgsl_pwrctrl_irq(device, KGSL_PWRFLAGS_OFF);
+	kgsl_pwrctrl_axi(device, KGSL_PWRFLAGS_OFF);
+	if (pwr->pwrlevels[0].gpu_freq > 0)
+		clk_set_rate(pwr->grp_clks[0],
+				pwr->pwrlevels[pwr->num_pwrlevels - 1].
+				gpu_freq);
+>>>>>>> e82cd0f... msm: kgsl: Eventually transition to SLUMBER
 	kgsl_pwrctrl_busy_time(device, false);
 	device->pwrctrl.busy.start.tv_sec = 0;
 	device->pwrctrl.time = 0;
