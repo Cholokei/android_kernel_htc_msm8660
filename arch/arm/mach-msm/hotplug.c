@@ -17,6 +17,7 @@
 #include "spm.h"
 #include "pm.h"
 
+#ifdef CONFIG_SMP
 extern volatile int pen_release;
 
 struct msm_hotplug_device {
@@ -62,6 +63,7 @@ static inline void platform_do_lowpower(unsigned int cpu)
 		pr_debug("CPU%u: spurious wakeup call\n", cpu);
 	}
 }
+#endif
 
 int platform_cpu_kill(unsigned int cpu)
 {
@@ -78,12 +80,16 @@ int platform_cpu_kill(unsigned int cpu)
  */
 void platform_cpu_die(unsigned int cpu)
 {
+<<<<<<< HEAD
 	if (unlikely(cpu != smp_processor_id())) {
 		pr_crit("%s: running on %u, should be %u\n",
 			__func__, smp_processor_id(), cpu);
 		BUG();
 	}
 	complete(&__get_cpu_var(msm_hotplug_devices).cpu_killed);
+=======
+#ifdef CONFIG_SMP
+>>>>>>> c30553e... msm: hotplug: Support cpu hotplug in no PM cases
 	/*
 	 * we're ready for shutdown now, so do it
 	 */
@@ -92,6 +98,7 @@ void platform_cpu_die(unsigned int cpu)
 
 	pr_notice("CPU%u: %s: normal wakeup\n", cpu, __func__);
 	cpu_leave_lowpower();
+#endif
 }
 
 int platform_cpu_disable(unsigned int cpu)
