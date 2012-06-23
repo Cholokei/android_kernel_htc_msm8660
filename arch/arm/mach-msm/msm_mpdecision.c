@@ -344,6 +344,57 @@ static ssize_t store_scroff_single_core(struct kobject *a, struct attribute *b,
 	return count;
 }
 
+static ssize_t store_enabled(struct kobject *a, struct attribute *b,
+				   const char *buf, size_t count)
+{
+	unsigned int cpu, input, enabled;
+	int ret;
+	ret = sscanf(buf, "%u", &input);
+	if (ret != 1)
+		return -EINVAL;
+
+	switch (state) {
+	case MSM_MPDEC_DISABLED:
+		enabled = 0;
+		break;
+	case MSM_MPDEC_IDLE:
+	case MSM_MPDEC_DOWN:
+	case MSM_MPDEC_UP:
+		enabled = 1;
+		break;
+	default:
+		enabled = 333;
+	}
+
+	if (buf[0] == enabled)
+		return -EINVAL;
+
+	switch (buf[0]) {
+	case '0':
+		state = MSM_MPDEC_DISABLED;
+		cpu = (CONFIG_NR_CPUS - 1);
+		if (!cpu_online(cpu)) {
+			per_cpu(msm_mpdec_cpudata, cpu).on_time = ktime_to_ms(ktime_get());
+			per_cpu(msm_mpdec_cpudata, cpu).online = true;
+			cpu_up(cpu);
+			pr_info(MPDEC_TAG"nap time... Hot plugged CPU[%d] | Mask=[%d%d]\n",
+					 cpu, cpu_online(0), cpu_online(1));
+		} else {
+			pr_info(MPDEC_TAG"nap time...\n");
+		}
+		break;
+	case '1':
+		state = MSM_MPDEC_IDLE;
+		was_paused = true;
+		schedule_delayed_work(&msm_mpdec_work, 0);
+		pr_info(MPDEC_TAG"firing up mpdecision...\n");
+		break;
+	default:
+		ret = -EINVAL;
+	}
+	return count;
+}
+
 static ssize_t store_nwns_threshold_up(struct kobject *a, struct attribute *b,
 				   const char *buf, size_t count)
 {
