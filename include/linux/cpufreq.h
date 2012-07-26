@@ -343,9 +343,6 @@ static inline unsigned int cpufreq_quick_get(unsigned int cpu)
   Performance governor is fallback governor if any other gov failed to
   auto load due latency restrictions
 */
-#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_SMARTASS)
-extern struct cpufreq_governor cpufreq_gov_smartass;
-#define CPUFREQ_DEFAULT_GOVERNOR (&cpufreq_gov_smartass)
 #ifdef CONFIG_CPU_FREQ_GOV_PERFORMANCE
 extern struct cpufreq_governor cpufreq_gov_performance;
 #endif
