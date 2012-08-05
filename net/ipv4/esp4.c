@@ -463,17 +463,10 @@ static u32 esp4_get_mtu(struct xfrm_state *x, int mtu)
 	case XFRM_MODE_TRANSPORT:
 	case XFRM_MODE_BEET:
 		net_adj = sizeof(struct iphdr);
-<<<<<<< HEAD
 		break;
 	case XFRM_MODE_TUNNEL:
 		net_adj = 0;
 		break;
-=======
-		break;
-	case XFRM_MODE_TUNNEL:
-		net_adj = 0;
-		break;
->>>>>>> korg/korg/linux-3.0.y
 	default:
 		BUG();
 	}
