@@ -149,7 +149,7 @@
 
 #ifdef CONFIG_CPU_FREQ_GOV_ONDEMAND_2_PHASE
 int set_two_phase_freq(int cpufreq);
-#ifdef CONFIG_CPU_FREQ_GOV_INTELLIDEMAND
+#ifdef CONFIG_CPU_FREQ_GOV_INTELLIDEMAND_2_phase
 int id_set_two_phase_freq(int cpufreq);
 #endif
 #endif
@@ -6636,7 +6636,7 @@ static void __init msm8x60_init(struct msm_board_data *board_data)
 
 #ifdef CONFIG_CPU_FREQ_GOV_ONDEMAND_2_PHASE
 	set_two_phase_freq(1134000);
-#ifdef CONFIG_CPU_FREQ_GOV_INTELLIDEMAND
+#ifdef CONFIG_CPU_FREQ_GOV_INTELLIDEMAND_2_phase
 	id_set_two_phase_freq(1134000);
 #endif
 #endif
