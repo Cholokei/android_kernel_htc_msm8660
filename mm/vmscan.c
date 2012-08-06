@@ -344,11 +344,8 @@ unsigned long shrink_slab(struct shrink_control *shrink,
 			if (total_scan <= 0)
 				break;
 		} while (cmpxchg(&shrinker->nr, nr, new_nr) != nr);
-<<<<<<< HEAD
-=======
 
 		trace_mm_shrink_slab_end(shrinker, shrink_ret, nr, new_nr);
->>>>>>> korg/korg/linux-3.0.y
 	}
 	up_read(&shrinker_rwsem);
 out:
@@ -1060,11 +1057,7 @@ int __isolate_lru_page(struct page *page, isolate_mode_t mode, int file)
 		return ret;
 
 	all_lru_mode = (mode & (ISOLATE_ACTIVE|ISOLATE_INACTIVE)) ==
-<<<<<<< HEAD
 			(ISOLATE_ACTIVE|ISOLATE_INACTIVE);
-=======
-		(ISOLATE_ACTIVE|ISOLATE_INACTIVE);
->>>>>>> korg/korg/linux-3.0.y
 
 	/*
 	 * When checking the active state, we need to be sure we are
@@ -1087,11 +1080,9 @@ int __isolate_lru_page(struct page *page, isolate_mode_t mode, int file)
 
 	ret = -EBUSY;
 
-<<<<<<< HEAD
 	if ((mode & ISOLATE_CLEAN) && (PageDirty(page) || PageWriteback(page)))
 			return ret;
 
-=======
 	/*
 	 * To minimise LRU disruption, the caller can indicate that it only
 	 * wants to isolate pages it will be able to operate on without
@@ -1129,7 +1120,6 @@ int __isolate_lru_page(struct page *page, isolate_mode_t mode, int file)
 	if ((mode & ISOLATE_UNMAPPED) && page_mapped(page))
 		return ret;
 
->>>>>>> korg/korg/linux-3.0.y
 	if (likely(get_page_unless_zero(page))) {
 		/*
 		 * Be careful not to clear PageLRU until after we're
@@ -1292,11 +1282,7 @@ static unsigned long isolate_pages_global(unsigned long nr,
 					struct list_head *dst,
 					unsigned long *scanned, int order,
 					isolate_mode_t mode,
-<<<<<<< HEAD
 					struct zone *z, int active, int file)
-=======
-					struct zone *z,	int active, int file)
->>>>>>> korg/korg/linux-3.0.y
 {
 	int lru = LRU_BASE;
 	if (active)
@@ -1542,11 +1528,8 @@ shrink_inactive_list(unsigned long nr_to_scan, struct zone *zone,
 	unsigned long nr_taken;
 	unsigned long nr_anon;
 	unsigned long nr_file;
-<<<<<<< HEAD
 	unsigned long nr_dirty = 0;
 	unsigned long nr_writeback = 0;
-=======
->>>>>>> korg/korg/linux-3.0.y
 	isolate_mode_t reclaim_mode = ISOLATE_INACTIVE;
 
 	while (unlikely(too_many_isolated(zone, file, sc))) {
@@ -1559,12 +1542,7 @@ shrink_inactive_list(unsigned long nr_to_scan, struct zone *zone,
 
 	set_reclaim_mode(priority, sc, false);
 	if (sc->reclaim_mode & RECLAIM_MODE_LUMPYRECLAIM)
-<<<<<<< HEAD
 			reclaim_mode |= ISOLATE_ACTIVE;
-=======
-		reclaim_mode |= ISOLATE_ACTIVE;
-
->>>>>>> korg/korg/linux-3.0.y
 	lru_add_drain();
 
 	if (!sc->may_unmap)
@@ -1575,13 +1553,8 @@ shrink_inactive_list(unsigned long nr_to_scan, struct zone *zone,
 	spin_lock_irq(&zone->lru_lock);
 
 	if (scanning_global_lru(sc)) {
-<<<<<<< HEAD
-			nr_taken = isolate_pages_global(nr_to_scan, &page_list,
-					&nr_scanned, sc->order, reclaim_mode, zone, 0, file);
-=======
 		nr_taken = isolate_pages_global(nr_to_scan, &page_list,
 			&nr_scanned, sc->order, reclaim_mode, zone, 0, file);
->>>>>>> korg/korg/linux-3.0.y
 		zone->pages_scanned += nr_scanned;
 		if (current_is_kswapd())
 			__count_zone_vm_events(PGSCAN_KSWAPD, zone,
@@ -1590,15 +1563,9 @@ shrink_inactive_list(unsigned long nr_to_scan, struct zone *zone,
 			__count_zone_vm_events(PGSCAN_DIRECT, zone,
 					       nr_scanned);
 	} else {
-<<<<<<< HEAD
-			nr_taken = mem_cgroup_isolate_pages(nr_to_scan, &page_list,
-					&nr_scanned, sc->order, reclaim_mode, zone,
-					sc->mem_cgroup, 0, file);
-=======
 		nr_taken = mem_cgroup_isolate_pages(nr_to_scan, &page_list,
 			&nr_scanned, sc->order, reclaim_mode, zone,
 			sc->mem_cgroup, 0, file);
->>>>>>> korg/korg/linux-3.0.y
 		/*
 		 * mem_cgroup_isolate_pages() keeps track of
 		 * scanned pages on its own.
@@ -1941,29 +1908,12 @@ static void get_scan_count(struct zone *zone, struct scan_control *sc,
 	enum lru_list l;
 	int noswap = 0;
 	bool force_scan = false;
-<<<<<<< HEAD
-
-	/*
-	 * If the zone or memcg is small, nr[l] can be 0.  This
-	 * results in no scanning on this priority and a potential
-	 * priority drop.  Global direct reclaim can go to the next
-	 * zone and tends to have no problems. Global kswapd is for
-	 * zone balancing and it needs to scan a minimum amount. When
-	 * reclaiming for a memcg, a priority drop can cause high
-	 * latencies, so it's better to scan a minimum amount there as
-	 * well.
-	 */
-	if (scanning_global_lru(sc) && current_is_kswapd())
-		force_scan = true;
-=======
-	unsigned long nr_force_scan[2];
 
 	/* kswapd does zone balancing and needs to scan this zone */
 	if (scanning_global_lru(sc) && current_is_kswapd() &&
 	    zone->all_unreclaimable)
 		force_scan = true;
 	/* memcg may have small limit and need to avoid priority drop */
->>>>>>> korg/korg/linux-3.0.y
 	if (!scanning_global_lru(sc))
 		force_scan = true;
 
@@ -1977,15 +1927,9 @@ static void get_scan_count(struct zone *zone, struct scan_control *sc,
 	}
 
 	anon  = zone_nr_lru_pages(zone, sc, LRU_ACTIVE_ANON) +
-<<<<<<< HEAD
-			zone_nr_lru_pages(zone, sc, LRU_INACTIVE_ANON);
-	file  = zone_nr_lru_pages(zone, sc, LRU_ACTIVE_FILE) +
-			zone_nr_lru_pages(zone, sc, LRU_INACTIVE_FILE);
-=======
 		zone_nr_lru_pages(zone, sc, LRU_INACTIVE_ANON);
 	file  = zone_nr_lru_pages(zone, sc, LRU_ACTIVE_FILE) +
 		zone_nr_lru_pages(zone, sc, LRU_INACTIVE_FILE);
->>>>>>> korg/korg/linux-3.0.y
 
 	if (scanning_global_lru(sc)) {
 		free  = zone_page_state(zone, NR_FREE_PAGES);
@@ -2236,14 +2180,11 @@ static inline bool compaction_ready(struct zone *zone, struct scan_control *sc)
  * scan then give up on it.
  *
  * This function returns true if a zone is being reclaimed for a costly
-<<<<<<< HEAD
  * high-order allocation and compaction is either ready to begin or deferred.
  * This indicates to the caller that it should retry the allocation or fail.
-=======
  * high-order allocation and compaction is ready to begin. This indicates to
  * the caller that it should consider retrying the allocation instead of
  * further reclaim.
->>>>>>> korg/korg/linux-3.0.y
  */
 static bool shrink_zones(int priority, struct zonelist *zonelist,
 					struct scan_control *sc)
@@ -2252,11 +2193,8 @@ static bool shrink_zones(int priority, struct zonelist *zonelist,
 	struct zone *zone;
 	unsigned long nr_soft_reclaimed;
 	unsigned long nr_soft_scanned;
-<<<<<<< HEAD
 	bool should_abort_reclaim = false;
-=======
 	bool aborted_reclaim = false;
->>>>>>> korg/korg/linux-3.0.y
 
 	for_each_zone_zonelist_nodemask(zone, z, zonelist,
 					gfp_zone(sc->gfp_mask), sc->nodemask) {
@@ -2281,19 +2219,16 @@ static bool shrink_zones(int priority, struct zonelist *zonelist,
 				 * noticable problem, like transparent huge page
 				 * allocations.
 				 */
-<<<<<<< HEAD
 				if (sc->order > PAGE_ALLOC_COSTLY_ORDER &&
 						(compaction_suitable(zone, sc->order) ||
 					 compaction_deferred(zone))) {
 					should_abort_reclaim = true;
 								continue;
 			}
-=======
 				if (compaction_ready(zone, sc)) {
 					aborted_reclaim = true;
 					continue;
 				}
->>>>>>> korg/korg/linux-3.0.y
 			}
 			/*
 			 * This steals pages from memory cgroups over softlimit
@@ -2313,11 +2248,8 @@ static bool shrink_zones(int priority, struct zonelist *zonelist,
 		shrink_zone(priority, zone, sc);
 	}
 
-<<<<<<< HEAD
 	return should_abort_reclaim;
-=======
 	return aborted_reclaim;
->>>>>>> korg/korg/linux-3.0.y
 }
 
 static bool zone_reclaimable(struct zone *zone)
@@ -2382,12 +2314,9 @@ static unsigned long do_try_to_free_pages(struct zonelist *zonelist,
 		sc->nr_scanned = 0;
 		if (!priority)
 			disable_swap_token(sc->mem_cgroup);
-<<<<<<< HEAD
 		if (shrink_zones(priority, zonelist, sc))
 			break;
-=======
 		aborted_reclaim = shrink_zones(priority, zonelist, sc);
->>>>>>> korg/korg/linux-3.0.y
 
 		/*
 		 * Don't shrink slabs when reclaiming memory from
