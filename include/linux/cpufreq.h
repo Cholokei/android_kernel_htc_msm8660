@@ -24,8 +24,6 @@
 
 #define CPUFREQ_NAME_LEN 16
 
-<<<<<<< HEAD
-=======
 extern uint32_t acpu_check_khz_value(unsigned long khz);
 
 #ifdef CONFIG_CPU_FREQ_GOV_BADASS_GPU_CONTROL
@@ -36,7 +34,6 @@ extern bool gpu_busy_state;
 /* Intellidemand screen state detection */
 extern bool lmf_screen_state;
 #endif
->>>>>>> 50554d2... acpi: add acpu_check_khz_value(); from bricked
 
 /*********************************************************************
  *                     CPUFREQ NOTIFIER INTERFACE                    *
