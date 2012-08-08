@@ -621,10 +621,7 @@ static int adreno_stop(struct kgsl_device *device)
 	kgsl_mmu_stop(device);
 
 	device->ftbl->irqctrl(device, 0);
-<<<<<<< HEAD
 	kgsl_pwrctrl_irq(device, KGSL_PWRFLAGS_OFF);
-=======
->>>>>>> f0b2aec... msm: kgsl: flush device workqueue before stop
 
 	/* Power down the device */
 	kgsl_pwrctrl_disable(device);
