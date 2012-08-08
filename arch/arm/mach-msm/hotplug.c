@@ -80,13 +80,16 @@ int platform_cpu_kill(unsigned int cpu)
  */
 void platform_cpu_die(unsigned int cpu)
 {
+<<<<<<< HEAD
 	if (unlikely(cpu != smp_processor_id())) {
 		pr_crit("%s: running on %u, should be %u\n",
 			__func__, smp_processor_id(), cpu);
 		BUG();
 	}
 	complete(&__get_cpu_var(msm_hotplug_devices).cpu_killed);
+=======
 #ifdef CONFIG_SMP
+>>>>>>> c30553e... msm: hotplug: Support cpu hotplug in no PM cases
 	/*
 	 * we're ready for shutdown now, so do it
 	 */
