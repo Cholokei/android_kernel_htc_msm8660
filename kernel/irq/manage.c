@@ -928,7 +928,7 @@ __setup_irq(unsigned int irq, struct irq_desc *desc, struct irqaction *new)
 		 * installing a new handler, but is this really a problem,
 		 * only the sysadmin is able to do this.
 		 */
-		rand_initialize_irq(irq);
+		// rand_initialize_irq(irq);
 	}
 
 	/*
@@ -1372,7 +1372,6 @@ EXPORT_SYMBOL(free_irq);
  *	Flags:
  *
  *	IRQF_SHARED		Interrupt is shared
- *	IRQF_SAMPLE_RANDOM	The interrupt can be used for entropy
  *	IRQF_TRIGGER_*		Specify active edge(s) or level
  *
  */
