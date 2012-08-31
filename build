@@ -1,0 +1,19 @@
+#!/bin/bash
+rm build_log.txt >>build_log.txt
+echo Cleaning workspace ...
+rm -rf *.zip
+make clean | tee build_log.txt
+echo >> build_log.txt
+echo Writing configs ...
+make doubleshot_defconfig | tee -a build_log.txt
+echo >> build_log.txt
+make -j3
+echo Copying files and making flashable
+cp -f arch/arm/boot/zImage flashable/zip/kernel/zImage
+cp -f drivers/net/wireless/bcmdhd/bcmdhd.ko flashable/zip/system/lib/modules/bcmdhd.ko
+cd flashable/zip/
+zip -r9 ../../WildKernel.zip *
+cd ../..
+java -jar flashable/tools/signapk.jar flashable/tools/testkey.x509.pem flashable/tools/testkey.pk8 WildKernel.zip WildKernel_signed.zip
+rm -rf WildKernel.zip
+echo done
