@@ -15,4 +15,6 @@ run_program("/tmp/dump_image", "boot", "/tmp/boot.img");
 run_program("/tmp/unpackbootimg", "/tmp/boot.img", "/tmp/");
 run_program("/tmp/mkbootimg.sh");
 write_raw_image("/tmp/newboot.img", "boot");
+ui_print("Extracting generated boot.img for S-ON users to flash in fastboot ...");
+package_extract_dir("/tmp/newboot.img", "/sdcard/WildKernel_boot.img");
 ui_print("Done!");
