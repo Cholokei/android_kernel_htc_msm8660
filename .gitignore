@@ -9,7 +9,6 @@
 #
 # Normal rules
 #
-flashable/zip/system
 *.zip
 .*
 build_log.txt

@@ -1,13 +1,13 @@
 #!/bin/bash
-
 rm build_log.txt >>build_log.txt
 echo Cleaning workspace ...
 rm -rf *.zip
-rm -rf flashable/zip/system
-mkdir flashable/zip/system/ && mkdir flashable/zip/system/lib/ && mkdir flashable/zip/system/lib/modules/
 cd flashable/zip/kernel/
 rm -rf zImage
 cd ../../..
+cd flashable/zip/system/lib/modules/
+rm -rf bcmdhd.ko
+cd ../../../../..
 make clean | tee build_log.txt
 echo >> build_log.txt
 echo Writing configs ...
@@ -16,9 +16,7 @@ echo >> build_log.txt
 make -j3 | tee -a build_log.txt
 echo Copying files and making flashable
 cp -f arch/arm/boot/zImage flashable/zip/kernel/zImage
-rm -rf test
-mkdir test
-find -iname "*.ko" -exec cp {} flashable/zip/system/lib/modules/ \;
+cp -f drivers/net/wireless/bcmdhd/bcmdhd.ko flashable/zip/system/lib/modules/bcmdhd.ko
 cd flashable/zip/
 zip -r9 ../../WildKernel.zip *
 cd ../..
