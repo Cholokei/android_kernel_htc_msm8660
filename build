@@ -2,6 +2,12 @@
 rm build_log.txt >>build_log.txt
 echo Cleaning workspace ...
 rm -rf *.zip
+cd flashable/zip/kernel/
+rm -rf zImage
+cd ../../..
+cd flashable/zip/system/lib/modules/
+rm -rf bcmdhd.ko
+cd ../../..
 make clean | tee build_log.txt
 echo >> build_log.txt
 echo Writing configs ...
