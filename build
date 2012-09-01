@@ -7,7 +7,7 @@ rm -rf zImage
 cd ../../..
 cd flashable/zip/system/lib/modules/
 rm -rf bcmdhd.ko
-cd ../../..
+cd ../../../../..
 make clean | tee build_log.txt
 echo >> build_log.txt
 echo Writing configs ...
