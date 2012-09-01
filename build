@@ -16,8 +16,6 @@ echo >> build_log.txt
 make -j3 | tee -a build_log.txt
 echo Copying files and making flashable
 cp -f arch/arm/boot/zImage flashable/zip/kernel/zImage
-rm -rf test
-mkdir test
 find -iname "*.ko" -exec cp {} flashable/zip/system/lib/modules/ \;
 cd flashable/zip/
 zip -r9 ../../WildKernel.zip *
