@@ -290,7 +290,7 @@ static struct clkctl_acpu_speed acpu_freq_tbl_nom[] = {
 #endif
 
 /* SCPLL frequencies = 2 * 27 MHz * L_VAL */
-static struct clkctl_acpu_speed acpu_freq_tbl_fast[] = {
+static struct clkctl_acpu_speed acpu_freq_tbl_oc[] = {
   { {1, 1},  192000,  ACPU_PLL_8, 3, 1, 0, 0,    L2(1),   800000, 0x03006000},
   /* MAX_AXI row is used to source CPU cores and L2 from the AFAB clock. */
   { {0, 0},  MAX_AXI, ACPU_AFAB,  1, 0, 0, 0,    L2(0),   825000, 0x03006000},
@@ -998,7 +998,7 @@ static unsigned int __init select_freq_plan(void)
 		case 0x1:
 		case 0x3:
 		default:
-			acpu_freq_tbl = acpu_freq_tbl_fast;
+			acpu_freq_tbl = acpu_freq_tbl_oc;
 			pr_info("ACPU PVS: Fast\n");
 			break;
 	}
