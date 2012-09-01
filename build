@@ -7,7 +7,7 @@ echo >> build_log.txt
 echo Writing configs ...
 make doubleshot_defconfig | tee -a build_log.txt
 echo >> build_log.txt
-make -j3
+make -j3 | tee -a build_log.txt
 echo Copying files and making flashable
 cp -f arch/arm/boot/zImage flashable/zip/kernel/zImage
 cp -f drivers/net/wireless/bcmdhd/bcmdhd.ko flashable/zip/system/lib/modules/bcmdhd.ko
